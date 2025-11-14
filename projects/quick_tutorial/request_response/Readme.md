@@ -1,9 +1,10 @@
 Analysis
-Di modul ini, terdapat hal yang di pelajari diantaranya:
-1. Route home yang otomatis redirect ke /plain pakai HTTPFound.
-2. Route plain yang menampilkan nama dari query parameter, kalau ga ada nama dikasih default 'No Name Provided'.
-Atur content_type sama body di response. Unit test ngecek logika redirect dan response body, sementara functional test ngecek di app beneran. Jadi gampang nge-test redirect, ambil data dari URL, dan ngubah response tanpa ribet.
+Dalam modul ini, dipelajari beberapa konsep implementasi:
+1. Sebuah route home dikonfigurasi untuk secara otomatis mengalihkan (redirect) ke /plain menggunakan HTTPFound.
+2. Sebuah route plain dibuat untuk menampilkan nama yang diambil dari query parameter URL. Jika parameter nama tidak ada, digunakan nilai default 'No Name Provided'.
+Pembelajaran juga mencakup cara mengatur content_type dan body secara spesifik pada response.Unit test diterapkan untuk memeriksa logika internal (seperti proses redirect dan konten response body), sementara functional test digunakan untuk memvalidasi fungsionalitas ini pada aplikasi yang berjalan secara keseluruhan. Metode ini terbukti mempermudah pengujian alur redirect, pengambilan data dari URL, dan manipulasi response tanpa kesulitan.
 
 Extra Credit
-- return → cuma ngembaliin response ke Pyramid.
-- raise → ngehentikan view langsung, Pyramid otomatis nge-handle redirect.
+Benar, HTTPFound (dan exception respons HTTP lainnya) memang dapat digunakan dengan dua cara: raise ataupun return.
+- return = mengembalikan response sebagai hasil normal.
+- raise = memicu mekanisme exception yang Pyramid tangani untuk menghasilkan response redirect.
