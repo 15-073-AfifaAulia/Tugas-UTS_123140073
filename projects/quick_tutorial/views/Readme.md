@@ -1,9 +1,8 @@
 Analysis
-Pada tahap ini saya sudah memisahkan kode view dari __init__.py ke file baru views.py, lalu menggunakan @view_config sebagai cara declarative configuration. Dengan begitu, kode startup jadi lebih ringkas dan rapi karena view tidak dicampur dengan konfigurasi aplikasi.
-Sekarang saya punya dua view (home dan hello) yang saling terhubung lewat link. Keduanya diuji menggunakan pytest dan hasilnya semua test berhasil. Pendekatan ini juga menunjukkan bahwa nama view, route, dan URL bisa berbeda satu sama lain tergantung konfigurasi.
+Pada tahap ini saya belajar mengorganisir view di Pyramid dengan cara yang lebih rapi. Sebelumnya, semua hal dicampur dalam satu file: fungsi view, konfigurasi route, dan inisialisasi aplikasi (WSGI app). Walaupun itu berfungsi, tapi untuk aplikasi yang lebih besar struktur seperti itu bakal cepat berantakan.
+
+Di langkah ini, saya memisahkan views ke file terpisah (views.py) dan membiarkan Pyramid men-scan file tersebut untuk menemukan dekorator @view_config. Mulai dari sini, konfigurasi view dilakukan secara deklaratif, bukan lagi imperatif seperti sebelumnya.
 
 Extra Credit
-1. Apa arti tanda titik pada .views?
-Tanda titik (.) pada config.scan('.views') menunjukkan bahwa file views.py berada di dalam package yang sama dengan __init__.py. Jadi . itu artinya relative import path dari modul saat ini (tutorial), bukan path absolut.
-2. Kenapa assertIn lebih baik dari assertEqual?
-assertIn lebih fleksibel karena hanya memeriksa apakah potongan teks tertentu ada di dalam response body, bukan harus sama persis dengan seluruh HTML. Ini membantu kalau nanti ada tambahan atribut HTML atau whitespace yang tidak memengaruhi hasil test, jadi test tetap valid dan tidak mudah gagal hanya karena detail kecil.
+1. Tanda titik di depan .views berarti relative import terhadap package saat ini. Kalau ditulis tanpa titik ('views'), Pyramid akan mencari modul bernama views dari root package Python, bukan dari package aplikasi saat ini.
+2. Karena dalam pengujian web, isi respons biasanya lebih panjang atau memiliki konten tambahan yang tidak kita pedulikan.
