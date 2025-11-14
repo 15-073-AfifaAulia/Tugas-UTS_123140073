@@ -1,9 +1,10 @@
 Analysis
-Pada tahap ini, saya mengubah struktur view dari fungsi bebas menjadi class-based views agar kode lebih terorganisir.
-Dua view (home dan hello) sekarang menjadi method dalam satu kelas TutorialViews.
-Dengan pendekatan ini, saya bisa mengelompokkan view yang berhubungan dan juga menaruh konfigurasi umum (seperti renderer='home.pt') di tingkat kelas menggunakan @view_defaults.
-Hasil pengujian menunjukkan semua tes tetap lolos tanpa error, artinya fungsionalitas masih sama, tapi struktur kode jadi lebih rapi dan mudah dikembangkan.
+Pada tahap ini, fokus pembelajaran beralih ke cara Pyramid menangani HTML menggunakan template, sebagai pengganti metode hardcoding HTML langsung di dalam kode Python.
 
-Extra Credit
-- Kenapa pakai view class? Karena beberapa view bisa berbagi logika atau data yang sama, jadi lebih efisien kalau dikelompokkan ke dalam satu class.
-- Perubahan di test case: Karena view sekarang berupa class, di test saya harus membuat instance dulu (inst = TutorialViews(request)) sebelum memanggil method-nya (inst.home()).
+Metode sebelumnya (hardcoding) diakui masih valid, namun sangat tidak praktis dan sulit dirawat (unmaintainable) untuk aplikasi yang berkembang. Pyramid sendiri tidak membatasi (agnostik) pada satu templating engine tertentu. Dalam latihan ini, pyramid_chameleon digunakan karena dokumentasinya yang ringan dan proses integrasi yang mulus.
+
+Sebuah observasi penting adalah bagaimana kedua view (home dan hello) dapat memanfaatkan template yang sama, hanya dengan melewatkan data yang berbeda. Hal ini menunjukkan bagaimana template mendorong reusability (penggunaan kembali) dan modularitas kode.
+
+Untuk alur kerja pengembangan, penambahan pyramid.reload_templates = true di dalam development.ini terbukti sangat bermanfaat. Pengaturan ini memungkinkan pembaruan pada file template agar langsung terlihat di browser tanpa perlu me-restart server.
+
+Pola pengujian juga mengalami adaptasi. Karena view kini mengembalikan dictionary (berisi data untuk template), unit test dapat difokuskan untuk memvalidasi isi dictionary tersebut secara langsung, tanpa perlu melakukan parsing HTML. Sementara itu, tanggung jawab untuk memastikan HTML akhir telah di-render dengan benar dan berisi teks yang sesuai, kini ditangani oleh functional test.
