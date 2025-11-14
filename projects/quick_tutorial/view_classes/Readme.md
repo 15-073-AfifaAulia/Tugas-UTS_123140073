@@ -1,8 +1,9 @@
 Analysis
-Pada tahap ini saya belajar menggunakan templating system supaya kode Python tidak lagi bercampur langsung dengan HTML. Dengan menambahkan dependensi pyramid_chameleon, kini tampilan HTML bisa dipisahkan ke file .pt, sementara fungsi view hanya mengembalikan data berupa dictionary.
-Pendekatan ini bikin kode jadi lebih bersih dan mudah dibaca, karena setiap bagian punya tanggung jawab yang jelas — logika di Python, tampilan di template. Selain itu, saat testing pun jadi lebih sederhana, karena pengujian cukup fokus pada data yang dikembalikan view, bukan lagi memeriksa isi HTML secara langsung.
-Dekorator @view_config juga bisa dikombinasikan dengan parameter renderer, jadi kita nggak perlu bikin Response secara manual. Hal ini mempermudah integrasi antara kode Python dan template HTML.
+Pada tahap ini, saya mempelajari proses refaktor dari view function (fungsi view) menjadi view class (kelas view) di Pyramid. Tujuan dari perubahan ini bukanlah untuk menambah fungsionalitas baru, melainkan untuk menata struktur kode agar lebih rapi dan skalabel jika aplikasi berkembang menjadi lebih besar.
 
-Extra Credit
-- Kenapa Pyramid mendukung banyak templating engine? Karena Pyramid punya konsep replaceability. Framework ini tidak memaksa developer untuk pakai satu sistem tertentu. Jadi, kita bisa pilih engine seperti Chameleon, Jinja2, atau Mako sesuai preferensi tim atau kebutuhan proyek.
-- Apa keuntungan view mengembalikan data, bukan HTML langsung? Dengan begitu, kode jadi lebih fleksibel dan bisa diuji lebih mudah. Jika suatu saat mau ganti template, view-nya tidak perlu diubah karena yang dikembalikan hanyalah data. Template-lah yang bertugas menampilkan hasil akhirnya.
+Awalnya, semua view diimplementasikan sebagai fungsi yang berdiri sendiri. Namun, ketika beberapa view memiliki hubungan logis atau menggunakan konfigurasi yang sama (contohnya, renderer atau template yang sama), akan lebih masuk akal untuk menggabungkan mereka ke dalam satu kelas. Dengan pendekatan view class ini:
+- view-view tersebut lebih terorganisir,
+- konfigurasi yang berulang bisa dipusatkan di @view_defaults,
+- dan kita bisa menyimpan state atau helper melalui __init__.
+
+Perubahan paling besar ternyata ada di bagian unit test. Karena sekarang view bukan fungsi bebas lagi, saya harus membuat instance dari kelas view (TutorialViews(request)) sebelum memanggil metodenya. Sisanya tetap sama seperti sebelumnya. Setelah itu semua test berjalan normal (4 passed) dan aplikasi tetap bisa dijalankan seperti biasa.
